@@ -29,8 +29,8 @@ const inverse = (m) => {
 
   const betaMu = math.multiply(matrix_XtX_inverse, matrix_XtY)
 
-  document.getElementById('result').innerHTML = betaMu
-  }
+  document.getElementById('result1').innerHTML = betaMu
+
 
 var sum_resid_sqr = sum_Yi_sqr - (betaMu[0]*sum_Yi + betaMu[1]*sum_XiYi + betaMu[2]*sum_YiZi);
 var sigmaMu_sqr = sum_resid_sqr/(n-k);
@@ -44,4 +44,6 @@ for (j = 1; j < betaMu.length; j++){
     var KTC_left = betaMu - 2.626*standardError
     var KTC_right = betaMu + 2.626*standardError
     khoảng_tin_cậy_betaMu.push(KTC_left + '-' + KTC_right)
+}
+document.getElementById('result2').innerHTML = khoảng_tin_cậy_betaMu
 }
