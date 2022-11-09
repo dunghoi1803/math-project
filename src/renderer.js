@@ -48,16 +48,16 @@ for (j = 1; j < betaMu.length; j++){
     let KTC_right = betaMu + hằng_số_t_alpha*standardError
     khoảng_tin_cậy_betaMu.push(KTC_left + '-' + KTC_right)
 }
-document.getElementById('result2').innerHTML = sigmaMu_sqr
+document.getElementById('result2').innerHTML = sigmaMu_sqr**0.5
 
 const matrix_Xto = math.matrix([1, Xo, Zo])
 const matrix_Xo = math.matrix([[1], [Xo], [Zo]])
 let Yo = betaMu.subset(math.index(0)) + betaMu.subset(math.index(1))*Xo + betaMu.subset(math.index(2))*Zo
-let variance_YoMu = sigmaMu_sqr*math.multiply(math.multiply(matrix_Xto, matrix_XtX_inverse), matrix_Xo)
+let variance_YoMu = sigmaMu_sqr*math.multiply(math.multiply(matrix_Xto, matrix_XtX_inverse), matrix_Xo).subset(math.index(0))
 let standardError_YoMu = Math.sqrt(variance_YoMu)
 let KTC_left_Yo = Yo - hằng_số_t_alpha*standardError_YoMu;
 let KTC_right_Yo = Yo + hằng_số_t_alpha*standardError_YoMu;
-const KTC_Y_Xo = [KTC_left_Yo, KTC_right_Yo]
+const KTC_Y_Xo = KTC_left_Yo+' ; '+ KTC_right_Yo
 
-document.getElementById('result3').innerHTML = Yo 
+document.getElementById('result3').innerHTML = KTC_Y_Xo
 }
