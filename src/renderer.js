@@ -18,6 +18,8 @@ let Xo = document.getElementById('Xo').value;
 let Zo = document.getElementById('Zo').value;
 let hằng_số_t_alpha = document.getElementById('hằng_số_t_alpha').value;
 
+// the first quest
+
 const matrix1 = [[n, sum_Xi ,sum_Zi ], [sum_Xi ,sum_Xi_sqr ,sum_XiZi ], [sum_Zi ,sum_XiZi , sum_Zi_sqr ]]
 const matrix_XtX = math.matrix(matrix1)    
 
@@ -33,22 +35,30 @@ const inverse = (m) => {
 
   const betaMu = math.multiply(matrix_XtX_inverse, matrix_XtY)
 
-  document.getElementById('result1').innerHTML = betaMu
+  document.getElementById('result1').innerHTML = 'Ma trận của các hệ số hồi quy là : ' + betaMu
+
+  // the second quest
 
 let sum_resid_sqr = sum_Yi_sqr - (betaMu.subset(math.index(0))*sum_Yi + betaMu.subset(math.index(1))*sum_XiYi + betaMu.subset(math.index(2))*sum_YiZi);
 let sigmaMu_sqr = sum_resid_sqr/(n-k);
-const khoảng_tin_cậy_betaMu = []
-const standardError_array = []
+let KTC_betaMu = ''
+let j = 1
 
-for (j = 1; j < betaMu.length; j++){
-    let variance_betaMu = sigmaMu_sqr*(matrix_XtX_inverse[j][j])
-    let standardError = Math.sqrt(variance_betaMu)
-    standardError_array.push(standardError)
-    let KTC_left = betaMu - hằng_số_t_alpha*standardError
-    let KTC_right = betaMu + hằng_số_t_alpha*standardError
-    khoảng_tin_cậy_betaMu.push(KTC_left + '-' + KTC_right)
-}
-document.getElementById('result2').innerHTML = sigmaMu_sqr**0.5
+  let variance_betaMu = sigmaMu_sqr*matrix_XtX_inverse.subset(math.index(j, j))
+  let standardError_betaMu = Math.sqrt(variance_betaMu)
+  let KTC_left = betaMu.subset(math.index(j)) - hằng_số_t_alpha*standardError_betaMu
+  let KTC_right = betaMu.subset(math.index(j)) + hằng_số_t_alpha*standardError_betaMu
+  KTC_betaMu = '(' + KTC_left + ' ; ' + KTC_right + ')'
+
+  variance_betaMu = sigmaMu_sqr*matrix_XtX_inverse.subset(math.index(j+1, j+1))
+  standardError_betaMu = Math.sqrt(variance_betaMu)
+  KTC_left = betaMu.subset(math.index(j+1)) - hằng_số_t_alpha*standardError_betaMu
+  KTC_right = betaMu.subset(math.index(j+1)) + hằng_số_t_alpha*standardError_betaMu
+  KTC_betaMu += ' , (' + KTC_left + ' ; ' + KTC_right + ')'
+
+document.getElementById('result2').innerHTML = 'Khoảng tin cậy của các hệ số hồi quy là : ' + KTC_betaMu
+
+// the third quest
 
 const matrix_Xto = math.matrix([1, Xo, Zo])
 const matrix_Xo = math.matrix([[1], [Xo], [Zo]])
@@ -59,5 +69,5 @@ let KTC_left_Yo = Yo - hằng_số_t_alpha*standardError_YoMu;
 let KTC_right_Yo = Yo + hằng_số_t_alpha*standardError_YoMu;
 const KTC_Y_Xo = KTC_left_Yo+' ; '+ KTC_right_Yo
 
-document.getElementById('result3').innerHTML = KTC_Y_Xo
+document.getElementById('result3').innerHTML = 'Dự báo giá trị trung bình của Yo là: ' + '(' + KTC_Y_Xo + ')'
 }
