@@ -1,7 +1,30 @@
 const { ipcRenderer } = require("electron");
 const { sqrt } = require("mathjs");
 const math = require("mathjs");
+const cells = document.querySelectorAll('.cell');
 
+cells.forEach(cell => {
+  cell.addEventListener('paste', handlePaste );
+})
+
+function handlePaste(event){
+    event.preventDefault();
+    const plainTextLines = event.clipboardData.getData('text');
+    const lines = plainTextLines.split(/\r\n/g)
+    const currentRowIndex = parseInt(event.target.getAttribute('data-row-index'), 10); 
+    const total = cells.length;
+    const pasteTotal = lines.length;
+    
+    for(let i = currentRowIndex; i < total; i++){
+      const valueToPaste = lines[i - currentRowIndex];
+      if(valueToPaste){
+         cells[i].value = valueToPaste;
+      }
+    }
+    document.querySelector('#result').innerHTML = plainTextLines;
+  }
+
+  
 function run() {
 let n = document.getElementById('n').value;
 let sum_Xi = document.getElementById('sum_Xi').value;
